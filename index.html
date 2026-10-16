@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}</style>
+<title>James Thomson</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a drawing sheet. Title block on top, a nozzle cross-section as the hero,
+   then each project as a labelled row beside its numbers. Blueprint blue in dark, drafting vellum in light. */
+:root {
+  --bg: #EDF1F5;
+  --surface: #F7F9FB;
+  --fg: #0F2038;
+  --muted: #46566D;
+  --line: #B7C4D4;
+  --accent: #C2410C;
+  --accent-fg: #FFFFFF;
+  --chip: #E1E8F0;
+  --grid: rgba(15, 32, 56, 0.05);
+  --display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --body: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0A1A30;
+    --surface: #0E2240;
+    --fg: #E4ECF6;
+    --muted: #9FB3CC;
+    --line: #2A4770;
+    --accent: #FF8A4C;
+    --accent-fg: #0A1A30;
+    --chip: #12294A;
+    --grid: rgba(140, 185, 240, 0.08);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0A1A30;
+  --surface: #0E2240;
+  --fg: #E4ECF6;
+  --muted: #9FB3CC;
+  --line: #2A4770;
+  --accent: #FF8A4C;
+  --accent-fg: #0A1A30;
+  --chip: #12294A;
+  --grid: rgba(140, 185, 240, 0.08);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  color: var(--fg);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  padding-block: 24px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.sheet { max-width: 1120px; margin-inline: auto; display: flex; flex-direction: column; gap: 8px; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+p { margin: 0; }
+ul { margin: 0; padding-left: 1.15em; display: flex; flex-direction: column; gap: 6px; }
+li::marker { color: var(--accent); }
+
+/* Title block */
+.titleblock {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border: 1.5px solid var(--fg);
+  background: var(--surface);
+}
+.tb-cell { padding: 10px 14px; border-right: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tb-cell:last-child { border-right: 0; }
+.tb-label { font: 400 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.tb-value { font: 500 15px var(--mono); overflow-wrap: anywhere; }
+.nav {
+  grid-column: 1 / -1;
+  display: flex; flex-wrap: wrap; gap: 6px 22px;
+  padding: 10px 14px;
+  border-top: 1.5px solid var(--fg);
+  font: 500 14px var(--mono);
+  letter-spacing: 0.04em;
+}
+.nav a { text-decoration: none; padding-block: 2px; border-bottom: 2px solid transparent; }
+.nav a:hover { border-bottom-color: var(--accent); }
+@media (max-width: 720px) {
+  .titleblock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tb-cell:nth-child(2) { border-right: 0; }
+  .tb-cell:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+}
+
+/* Hero */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: 48px;
+  align-items: center;
+  padding-block: 56px 40px;
+}
+@media (max-width: 880px) { .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-block: 36px 24px; } }
+.hero-text { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+.hero h1 {
+  font: 700 clamp(60px, 11vw, 124px)/0.9 var(--display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+.lead { font-size: 20px; max-width: 34em; }
+.chip {
+  align-self: flex-start;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--chip); border: 1px solid var(--line);
+  padding: 7px 14px;
+  font: 500 13px var(--mono);
+}
+.chip::before { content: ""; width: 9px; height: 9px; background: var(--accent); flex: none; }
+.figure {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 14px 14px 10px;
+  display: flex; flex-direction: column; gap: 8px;
+  min-width: 0;
+}
+.figure svg { width: 100%; height: auto; display: block; }
+.figure figcaption { font: 400 13px/1.45 var(--mono); color: var(--muted); }
+
+/* SVG parts */
+.hatch-line { stroke: var(--line); stroke-width: 1.4; }
+.wall { stroke: var(--fg); stroke-width: 2; stroke-linejoin: round; }
+.center { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 14 4 2 4; fill: none; }
+.flow { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+.dim { stroke: var(--accent); stroke-width: 1.3; fill: none; }
+.leader { stroke: var(--muted); stroke-width: 1; fill: none; }
+.arrow-fill { fill: var(--accent); }
+.dim-text { fill: var(--fg); font: 500 15px var(--mono); }
+.dim-name { fill: var(--muted); font: 400 12px var(--mono); letter-spacing: 0.08em; }
+.flow-text { fill: var(--accent); font: 500 12px var(--mono); letter-spacing: 0.08em; }
+.box { fill: var(--surface); stroke: var(--fg); stroke-width: 1.6; }
+.box-text { fill: var(--fg); font: 500 13px var(--mono); letter-spacing: 0.04em; }
+.encl { fill: none; stroke: var(--muted); stroke-width: 1.3; stroke-dasharray: 7 5; }
+
+/* Sections */
+.section { padding-block: 56px 8px; display: flex; flex-direction: column; gap: 12px; }
+.section-head { display: flex; align-items: center; gap: 20px; }
+.section-head h2 { font: 700 44px/1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+.section-head::after { content: ""; flex: 1; height: 1.5px; background: var(--fg); }
+
+.proj {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 32px;
+  padding-block: 36px;
+  border-top: 1px solid var(--line);
+}
+.section-head + .proj { border-top: 0; }
+@media (max-width: 760px) { .proj { grid-template-columns: minmax(0, 1fr); gap: 14px; } }
+.meta { display: flex; flex-direction: column; gap: 6px; font: 400 13px/1.5 var(--mono); color: var(--muted); min-width: 0; }
+.meta strong { color: var(--fg); font-weight: 500; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.tag { background: var(--chip); border: 1px solid var(--line); padding: 2px 8px; font: 400 12px var(--mono); color: var(--fg); }
+.status { align-self: flex-start; border: 1px solid var(--accent); color: var(--accent); padding: 2px 8px; font: 500 12px var(--mono); letter-spacing: 0.06em; }
+.body { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.body h3 { font: 600 30px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+.body p { max-width: 42em; }
+
+.specs-title { font: 500 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.spec { background: var(--surface); padding: 10px 14px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.spec dt { font: 400 12px var(--mono); color: var(--muted); letter-spacing: 0.04em; }
+.spec dd { margin: 0; font: 500 18px var(--mono); }
+.spec dd small { font: 400 13px var(--mono); color: var(--muted); }
+.spec.hl dd { color: var(--accent); }
+.note { font-size: 15px; color: var(--muted); max-width: 42em; }
+
+/* Experience */
+.job { display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 32px; padding-block: 28px; border-top: 1px solid var(--line); }
+.job:first-of-type { border-top: 0; }
+.job h3 { font: 600 26px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+.job .role { color: var(--muted); font: 400 14px var(--mono); }
+@media (max-width: 760px) { .job { grid-template-columns: minmax(0, 1fr); gap: 12px; } }
+
+/* Background */
+.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; padding-block: 28px 8px; }
+@media (max-width: 760px) { .two { grid-template-columns: minmax(0, 1fr); } }
+.two > div { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.two h3 { font: 600 26px/1.1 var(--display); text-transform: uppercase; letter-spacing: 0.02em; }
+.skill-group { display: flex; flex-direction: column; gap: 6px; }
+.skill-group .label { font: 400 12px var(--mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Contact */
+.contact { display: flex; flex-direction: column; gap: 18px; padding-block: 28px 8px; max-width: 42em; }
+.contact-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.email { font: 500 22px var(--mono); overflow-wrap: anywhere; }
+.btn {
+  display: inline-block;
+  background: transparent; color: var(--fg);
+  border: 1.5px solid var(--fg);
+  padding: 8px 16px;
+  font: 500 14px var(--mono);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { background: var(--fg); color: var(--bg); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-fg); }
+.btn.primary:hover { background: var(--fg); border-color: var(--fg); color: var(--bg); }
+.status-text { font: 400 13px var(--mono); color: var(--muted); min-height: 1.4em; }
+.portrait { width: 132px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border: 1.5px solid var(--fg); display: block; }
+.figure img, .figure video { width: 100%; height: auto; display: block; }
+.figure video { background: #000; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; align-items: start; }
+.split-main { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+@media (max-width: 760px) { .split { grid-template-columns: minmax(0, 1fr); } .portrait { width: 110px; } }
+footer { padding-top: 48px; font: 400 13px var(--mono); color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="sheet">
+  <header class="titleblock">
+    <div class="tb-cell"><span class="tb-label">Name</span><span class="tb-value">James Thomson</span></div>
+    <div class="tb-cell"><span class="tb-label">Discipline</span><span class="tb-value">Mechanical Engineering</span></div>
+    <div class="tb-cell"><span class="tb-label">School</span><span class="tb-value">Boston University, 2029</span></div>
+    <div class="tb-cell"><span class="tb-label">Location</span><span class="tb-value">Boston, MA</span></div>
+    <nav class="nav" aria-label="Sections">
+      <a href="#projects">Projects</a>
+      <a href="#experience">Experience</a>
+      <a href="#background">Background</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Introduction">
+      <div class="hero-text">
+        <img class="portrait" src="./portrait.jpg" alt="Portrait of James Thomson" width="560" height="700">
+        <h1>James Thomson</h1>
+        <p class="lead">Mechanical engineering student at Boston University. I design, analyze and test rocket hardware with the BU Rocket Propulsion Group.</p>
+        <span class="chip">Looking for summer 2027 internships in aerospace and mechanical engineering</span>
+      </div>
+
+      <figure class="figure">
+        <svg viewBox="0 0 600 360" role="img" aria-label="Cross-section of a bell nozzle with the throat diameter, 0.284 inches, and the exit diameter, 0.726 inches, dimensioned. Gas flows left to right.">
+          <defs>
+            <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="7" class="hatch-line"/>
+            </pattern>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10z" class="arrow-fill"/>
+            </marker>
+          </defs>
+          <line x1="0" y1="180" x2="530" y2="180" class="center"/>
+          <path class="wall" fill="url(#hatch)" d="M20 32.0 L60 32.0 L120 32.0 L130 33.8 L140 38.9 L150 46.6 L160 56.4 L170 67.6 L180 79.8 L190 92.2 L200 104.4 L210 115.6 L220 125.4 L230 133.1 L240 138.2 L250 140.0 L256 136.3 L266 130.4 L276 124.8 L286 119.5 L296 114.5 L306 109.9 L316 105.5 L326 101.5 L336 97.8 L346 94.4 L356 91.3 L366 88.5 L376 86.1 L386 83.9 L396 82.1 L406 80.6 L416 79.4 L426 78.6 L436 78.0 L436 62.0 L426 62.6 L416 63.4 L406 64.6 L396 66.1 L386 67.9 L376 70.1 L366 72.5 L356 75.3 L346 78.4 L336 81.8 L326 85.5 L316 89.5 L306 93.9 L296 98.5 L286 103.5 L276 108.8 L266 114.4 L256 120.3 L250 124.0 L240 122.2 L230 117.1 L220 109.4 L210 99.6 L200 88.4 L190 76.2 L180 63.8 L170 51.6 L160 40.4 L150 30.6 L140 22.9 L130 17.8 L120 16.0 L60 16.0 L20 16.0Z"/>
+          <path class="wall" fill="url(#hatch)" d="M20 328.0 L60 328.0 L120 328.0 L130 326.2 L140 321.1 L150 313.4 L160 303.6 L170 292.4 L180 280.2 L190 267.8 L200 255.6 L210 244.4 L220 234.6 L230 226.9 L240 221.8 L250 220.0 L256 223.7 L266 229.6 L276 235.2 L286 240.5 L296 245.5 L306 250.1 L316 254.5 L326 258.5 L336 262.2 L346 265.6 L356 268.7 L366 271.5 L376 273.9 L386 276.1 L396 277.9 L406 279.4 L416 280.6 L426 281.4 L436 282.0 L436 298.0 L426 297.4 L416 296.6 L406 295.4 L396 293.9 L386 292.1 L376 289.9 L366 287.5 L356 284.7 L346 281.6 L336 278.2 L326 274.5 L316 270.5 L306 266.1 L296 261.5 L286 256.5 L276 251.2 L266 245.6 L256 239.7 L250 236.0 L240 237.8 L230 242.9 L220 250.6 L210 260.4 L200 271.6 L190 283.8 L180 296.2 L170 308.4 L160 319.6 L150 329.4 L140 337.1 L130 342.2 L120 344.0 L60 344.0 L20 344.0Z"/>
+
+          <line x1="40" y1="180" x2="108" y2="180" class="flow" marker-end="url(#arrow)"/>
+          <text x="74" y="166" text-anchor="middle" class="flow-text">GAS FLOW</text>
+
+          <!-- throat -->
+          <line x1="250" y1="144" x2="250" y2="216" class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+          <line x1="250" y1="236" x2="250" y2="286" class="leader"/>
+          <text x="250" y="306" text-anchor="middle" class="dim-text">Ø 0.284 in</text>
+          <text x="250" y="324" text-anchor="middle" class="dim-name">THROAT</text>
+
+          <!-- exit -->
+          <line x1="436" y1="78" x2="472" y2="78" class="leader"/>
+          <line x1="436" y1="282" x2="472" y2="282" class="leader"/>
+          <line x1="464" y1="82" x2="464" y2="278" class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+          <text x="476" y="176" class="dim-text">Ø 0.726 in</text>
+          <text x="476" y="196" class="dim-name">EXIT</text>
+        </svg>
+        <figcaption>Nozzle cross-section from my BURPG project. Throat and exit diameters are to scale. Lengths are schematic.</figcaption>
+      </figure>
+    </section>
+
+    <section class="section" id="projects" aria-labelledby="h-projects">
+      <div class="section-head"><h2 id="h-projects">Projects</h2></div>
+
+      <article class="proj">
+        <div class="meta">
+          <strong>BU Rocket Propulsion Group</strong>
+          <span>Hybrid Intro Project</span>
+          <span>Jan – May 2026</span>
+          <div class="tags"><span class="tag">SolidWorks</span><span class="tag">FEA</span><span class="tag">3D printing</span></div>
+        </div>
+        <div class="body">
+          <h3>Hybrid rocket nozzle: design, analysis, test fire</h3>
+          <p>I sized and modeled an 80% bell nozzle for a hybrid thruster optimized for operation at 45,000 ft. The design went through three design reviews, then I 3D-printed it in ABS resin and fired it on the group's test stand.</p>
+
+          <figure class="figure" style="margin:0">
+            <video controls playsinline preload="metadata" poster="./testfire-poster.jpg" aria-label="Video of the hybrid rocket test fire on the test stand">
+              <source src="./testfire.mp4" type="video/mp4">
+              Your browser can't play this video.
+            </video>
+            <figcaption>Test fire on the group's test stand, 15 seconds.</figcaption>
+          </figure>
+
+          <div class="specs-title">Calculated design values</div>
+          <dl class="specs" style="margin:0">
+            <div class="spec"><dt>Chamber pressure</dt><dd>80 psia</dd></div>
+            <div class="spec"><dt>Chamber temperature</dt><dd>3250 K</dd></div>
+            <div class="spec"><dt>Mass flow rate</dt><dd>13 g/s <small>0.029 lb/s</small></dd></div>
+            <div class="spec"><dt>Design altitude</dt><dd>45,000 ft <small>2.1 psia</small></dd></div>
+            <div class="spec"><dt>Critical pressure</dt><dd>46.3 psia <small>ratio 0.578</small></dd></div>
+            <div class="spec"><dt>Throat diameter</dt><dd>0.284 in</dd></div>
+            <div class="spec"><dt>Exit diameter</dt><dd>0.726 in</dd></div>
+            <div class="spec"><dt>Area ratio</dt><dd>6.52</dd></div>
+            <div class="spec"><dt>Exit velocity</dt><dd>8,830 ft/s</dd></div>
+            <div class="spec"><dt>Thrust at design altitude</dt><dd>7.9 lbf</dd></div>
+            <div class="spec"><dt>Specific impulse, ideal</dt><dd>274 s</dd></div>
+            <div class="spec"><dt>Thrust at sea level</dt><dd>2.6 lbf</dd></div>
+            <div class="spec hl"><dt>Minimum factor of safety, FEA</dt><dd>11.6 <small>requirement: 2</small></dd></div>
+          </dl>
+          <p class="note">Values come from isentropic nozzle relations applied to the project parameters. At sea level the nozzle is overexpanded, with exit pressure about 0.14 of ambient, which is why thrust drops from 7.9 to 2.6 lbf.</p>
+          <ul>
+            <li>Ran FEA in SolidWorks at full chamber pressure and checked the result against the factor-of-safety requirement before printing.</li>
+            <li>Took the design through conceptual, preliminary and critical reviews, each with more detail and justification than the last.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="meta">
+          <strong>BU Rocket Propulsion Group</strong>
+          <span>Structures team</span>
+          <span>Jan 2026 – present</span>
+          <span class="status">IN PROGRESS</span>
+          <div class="tags"><span class="tag">SolidWorks</span><span class="tag">OpenRocket</span></div>
+        </div>
+        <div class="body">
+          <h3>Argo boattail transition</h3>
+          <p>I am designing a boattail for the rocket Argo that steps the airframe from 8 in down to the 6.5 in engine casing, ahead of a Spring 2027 launch.</p>
+          <ul>
+            <li>Analyzing thermal and structural survival to confirm the boattail holds up under flight loads.</li>
+            <li>Running flight simulations in OpenRocket and flow simulations in SolidWorks to measure how much the boattail helps.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="proj">
+        <div class="meta">
+          <strong>Personal project</strong>
+          <span>Arduino and enclosure</span>
+          <span>Sep – Dec 2025</span>
+          <div class="tags"><span class="tag">Arduino</span><span class="tag">C++</span><span class="tag">OnShape</span><span class="tag">3D printing</span></div>
+        </div>
+        <div class="body">
+          <h3>Temperature sensor with a printed enclosure</h3>
+          <p>I built a sensor that measures temperature and shows live readings on an LCD, then designed and printed the enclosure around it.</p>
+          <div class="split"><div class="split-main">
+          <figure class="figure" style="margin:0">
+            <svg viewBox="0 0 560 140" role="img" aria-label="Block diagram: a temperature sensor feeds an Arduino, which drives an LCD, all inside a 3D-printed enclosure.">
+              <defs>
+                <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                  <path d="M0 0 L10 5 L0 10z" class="arrow-fill"/>
+                </marker>
+              </defs>
+              <rect x="8" y="8" width="544" height="124" rx="10" class="encl"/>
+              <text x="22" y="28" class="dim-name">3D-PRINTED ENCLOSURE, DESIGNED IN ONSHAPE</text>
+              <rect x="36" y="56" width="124" height="52" class="box"/>
+              <text x="98" y="86" text-anchor="middle" class="box-text">TEMP SENSOR</text>
+              <rect x="218" y="56" width="124" height="52" class="box"/>
+              <text x="280" y="86" text-anchor="middle" class="box-text">ARDUINO, C++</text>
+              <rect x="400" y="56" width="124" height="52" class="box"/>
+              <text x="462" y="86" text-anchor="middle" class="box-text">LCD</text>
+              <line x1="160" y1="82" x2="216" y2="82" class="dim" marker-end="url(#arrow2)"/>
+              <line x1="342" y1="82" x2="398" y2="82" class="dim" marker-end="url(#arrow2)"/>
+            </svg>
+          </figure>
+          <ul>
+            <li>Programmed the Arduino in C++ to read the sensor and update the LCD continuously.</li>
+            <li>Designed the enclosure in OnShape to fit the board and sensors, 3D-printed it, and assembled the electronics and hardware.</li>
+            <li>Stress-tested the sensor and electronics at over 250°F, and the unit kept working with the enclosure intact.</li>
+          </ul>
+          </div>
+          <figure class="figure" style="margin:0">
+            <img src="./sensor.jpg" alt="Inside the temperature sensor enclosure: an Arduino board, a 9 volt battery in a printed holder, a sensor board and wiring, with the LCD mounted on the lid" width="900" height="1200" loading="lazy">
+            <figcaption>The assembled unit: Arduino, battery, sensor wiring, and the LCD on the lid.</figcaption>
+          </figure>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="experience" aria-labelledby="h-exp">
+      <div class="section-head"><h2 id="h-exp">Experience</h2></div>
+
+      <div class="job">
+        <div class="meta"><strong>Hess Engineering</strong><span>Ashland, NH</span><span>May – Aug 2024</span></div>
+        <div class="body">
+          <div><h3>Intern</h3></div>
+          <ul>
+            <li>Inspected job sites, including a four-week water purity assessment for a new intake pipe at Loon Mountain.</li>
+            <li>Produced engineering drawings and CAD models for ongoing design projects.</li>
+            <li>Designed a searchable project database so past projects are quicker to find.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="meta"><strong>Brown Engineering</strong><span>Ashland, NH</span><span>May – Aug 2023</span></div>
+        <div class="body">
+          <div><h3>Intern</h3></div>
+          <ul>
+            <li>Supported field survey crews on residential and commercial projects across New Hampshire.</li>
+            <li>Leveled and calibrated a total station and GPS rover to keep field measurements accurate.</li>
+            <li>Redrafted existing project details in AutoCAD to match the firm's drafting standards.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="job">
+        <div class="meta"><strong>Sacred Earth</strong><span>Ho Chi Minh City, Vietnam</span><span>Feb – Apr 2025</span></div>
+        <div class="body">
+          <div><h3>Intern</h3></div>
+          <ul>
+            <li>Represented the company at major regional trade shows, demonstrating products to prospective customers.</li>
+            <li>Conducted an independent carbon footprint study of the company's global shipping operations.</li>
+            <li>Shadowed executive leadership in meetings to learn how decisions get made.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="background" aria-labelledby="h-bg">
+      <div class="section-head"><h2 id="h-bg">Background</h2></div>
+      <div class="two">
+        <div>
+          <h3>Education</h3>
+          <p><strong>Boston University College of Engineering</strong><br>B.S. in Mechanical Engineering<br><span style="color:var(--muted)">Sep 2025 – May 2029</span></p>
+          <p>GPA 3.86 / 4.00. Dean's List, Fall 2025 and Spring 2026.</p>
+        </div>
+        <div>
+          <h3>Skills</h3>
+          <div class="skill-group"><span class="label">Design and analysis</span><div class="chips"><span class="tag">SolidWorks</span><span class="tag">OnShape</span><span class="tag">AutoCAD</span><span class="tag">FEA</span></div></div>
+          <div class="skill-group"><span class="label">Software</span><div class="chips"><span class="tag">Python</span><span class="tag">MATLAB</span><span class="tag">C++ (Arduino)</span><span class="tag">OpenRocket</span></div></div>
+          <div class="skill-group"><span class="label">Fabrication</span><div class="chips"><span class="tag">3D printing</span></div></div>
+          <div class="skill-group"><span class="label">Languages</span><div class="chips"><span class="tag">English</span><span class="tag">Spanish, conversational</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact" aria-labelledby="h-contact">
+      <div class="section-head"><h2 id="h-contact">Contact</h2></div>
+      <div class="contact">
+        <p>I am looking for a summer 2027 internship in aerospace or mechanical engineering, in the Boston area or New Hampshire. Email is the quickest way to reach me.</p>
+        <div class="contact-row">
+          <span class="email" id="email">jalt@bu.edu</span>
+          <button class="btn primary" id="copy-email" type="button">Copy email</button>
+          <a class="btn" href="https://www.linkedin.com/in/jamesalthomson" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+        <div class="status-text" id="copy-status" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>James Thomson, Boston University College of Engineering</footer>
+</div>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy-email');
+  var out = document.getElementById('copy-status');
+  var emailEl = document.getElementById('email');
+  function selectEmail() {
+    try {
+      var r = document.createRange();
+      r.selectNodeContents(emailEl);
+      var s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+    } catch (e) {}
+  }
+  btn.addEventListener('click', function () {
+    var text = emailEl.textContent.trim();
+    var done = function (msg) {
+      out.textContent = msg;
+      setTimeout(function () { out.textContent = ''; }, 2600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () {
+        done('Email copied');
+      }, function () {
+        selectEmail();
+        done('Email selected. Press Ctrl+C or Cmd+C to copy.');
+      });
+    } else {
+      selectEmail();
+      done('Email selected. Press Ctrl+C or Cmd+C to copy.');
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
